@@ -5,8 +5,8 @@
 #include "driver/elevio.h"
 
 
-// make the elevator go to bottom floor
-void goTo0(){}
+// make the elevator go to the bottom floor
+void goTo0();
 
 
 
@@ -62,7 +62,8 @@ int main(){
 void goTo0(){
     int floor = elevio_floorSensor();
 
-    while(floor!=0){
+    if (floor!=0){
         elevio_motorDirection(DIRN_DOWN);
     }
+
 }

@@ -5,6 +5,10 @@
 #include "driver/elevio.h"
 
 
+// make the elevator go to bottom floor
+void goTo0(){}
+
+
 
 int main(){
     elevio_init();
@@ -13,6 +17,9 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
 
     elevio_motorDirection(DIRN_UP);
+
+    goTo0();
+
 
     while(1){
         int floor = elevio_floorSensor();
@@ -48,4 +55,14 @@ int main(){
     }
 
     return 0;
+}
+
+
+
+void goTo0(){
+    int floor = elevio_floorSensor();
+
+    while(floor!=0){
+        elevio_motorDirection(DIRN_DOWN);
+    }
 }

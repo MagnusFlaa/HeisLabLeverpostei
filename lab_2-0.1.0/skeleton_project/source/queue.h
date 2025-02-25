@@ -15,4 +15,4 @@ void initQueue(Queue *q);
 
 bool appendQueue(int floor, Queue *q);
 
-bool pop_front_Queue(Queue *q);
+void pop_front_Queue(Queue *q);

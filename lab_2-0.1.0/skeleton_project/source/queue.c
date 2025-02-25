@@ -12,7 +12,7 @@ bool appendQueue(int floor, Queue *q){
     return true;
 }
 
-bool pop_front_Queue(Queue *q){
+void pop_front_Queue(Queue *q){
     for(int i = 0; i < q->size-1; i++){
         q->bestillinger[i] = q->bestillinger[i+1];
     }

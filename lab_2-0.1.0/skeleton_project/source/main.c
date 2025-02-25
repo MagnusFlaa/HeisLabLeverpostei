@@ -16,12 +16,13 @@ int main(){
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
-    elevio_motorDirection(DIRN_UP);
-
     goTo0();
-
-
+    // For å signalisere at den har funnet stedet sitt.
+    elevio_stopLamp(1);  // Tenn stopp-lampa
+    nanosleep(&(struct timespec){1, 0}, NULL);  // Vent 1 sekund
+    elevio_stopLamp(0); //Slukk lampa
     while(1){
+        elevio_floorIndicator(3);
         int floor = elevio_floorSensor();
 
         if(floor == 0){
@@ -60,10 +61,14 @@ int main(){
 
 
 void goTo0(){
-    int floor = elevio_floorSensor();
-
-    if (floor!=0){
-        elevio_motorDirection(DIRN_DOWN);
+    elevio_motorDirection(DIRN_DOWN);
+    while(1){
+        int floor = elevio_floorSensor();
+        if (floor == 0){
+            elevio_motorDirection(DIRN_STOP);
+            break;
+        }
+        nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
 
 }

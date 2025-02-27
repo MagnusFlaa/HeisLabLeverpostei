@@ -34,15 +34,9 @@ void start(){
 
     Queue mainQueue;
     initQueue(&mainQueue);
-
-    appendQueue(3,&mainQueue);
-    appendQueue(1,&mainQueue);
-    appendQueue(3,&mainQueue);
-    appendQueue(2,&mainQueue);
-    appendQueue(0,&mainQueue);
+    
     int nextFloor = get_first_Queue(&mainQueue);
     int floor = elevio_floorSensor();
-    elevio_motorDirection(DIRN_UP);
 
     while(1){
         if(mainQueue.size > 0){

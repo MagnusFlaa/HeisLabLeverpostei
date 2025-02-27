@@ -2,13 +2,11 @@
 
 #include <stdbool.h>
 
-#define MAX_QUEUE_SIZE 4
+#define MAX_QUEUE_SIZE 10
 
 typedef struct{
     int bestillinger[MAX_QUEUE_SIZE];
     int size;
-    int front;
-    int rear;
 }Queue;
 
 void initQueue(Queue *q);
@@ -16,3 +14,5 @@ void initQueue(Queue *q);
 bool appendQueue(int floor, Queue *q);
 
 void pop_front_Queue(Queue *q);
+
+int get_first_Queue(Queue *q);

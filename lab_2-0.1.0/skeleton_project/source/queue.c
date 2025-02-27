@@ -37,3 +37,10 @@ bool is_in_Queue(int floor, Queue *q){
     }
     return false;
 }
+
+void clear_queue(Queue *q){
+    for(int i = 0 ; i < q->size; i++){
+        q->bestillinger[i] = 0 ;
+    }
+    q->size = 0 ;
+}

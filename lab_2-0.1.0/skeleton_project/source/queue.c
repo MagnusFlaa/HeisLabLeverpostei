@@ -4,12 +4,14 @@ void initQueue(Queue *q){
     q->size = 0;
 }
 bool appendQueue(int floor, Queue *q){
-    if(q->size == MAX_QUEUE_SIZE){
-        return false; //Køen er full
+    if(is_in_Queue(floor, q)){
+        return false;
     }
-    q->bestillinger[q->size] = floor;
-    q->size += 1;
-    return true;
+    else{
+        q->bestillinger[q->size] = floor;
+        q->size += 1;
+        return true;
+    }
 }
 
 void pop_front_Queue(Queue *q){

@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-#define MAX_QUEUE_SIZE 10
+#define MAX_QUEUE_SIZE 4
 
 typedef struct{
     int bestillinger[MAX_QUEUE_SIZE];

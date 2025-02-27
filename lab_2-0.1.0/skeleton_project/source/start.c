@@ -1,6 +1,7 @@
 #include "start.h"
 #include "driver/elevio.h"
 #include "queue.h"
+#include "lamp.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -34,11 +35,13 @@ void start(){
 
     Queue mainQueue;
     initQueue(&mainQueue);
-    
+
     int nextFloor = get_first_Queue(&mainQueue);
     int floor = elevio_floorSensor();
 
     while(1){
+
+        //Håndterer neste i køen
         if(mainQueue.size > 0){
             floor = elevio_floorSensor();
             if(floor == nextFloor){
@@ -92,6 +95,8 @@ void start(){
             elevio_motorDirection(DIRN_STOP);
             break;
         }
+        
+        elevio_floorIndicator(floor);
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }

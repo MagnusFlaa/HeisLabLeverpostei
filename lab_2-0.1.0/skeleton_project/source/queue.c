@@ -26,3 +26,12 @@ int get_first_Queue(Queue *q){
     }
     return q->bestillinger[0];
 }
+
+bool is_in_Queue(int floor, Queue *q){
+    for(int i = 0; i < q->size; i++){
+        if(floor == q->bestillinger[i]){
+            return true;
+        }
+    }
+    return false;
+}

@@ -16,3 +16,5 @@ bool appendQueue(int floor, Queue *q);
 void pop_front_Queue(Queue *q);
 
 int get_first_Queue(Queue *q);
+
+bool is_in_Queue(int floor, Queue *q);

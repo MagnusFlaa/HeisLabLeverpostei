@@ -1,5 +1,7 @@
 #include "interrupt.h"
 
+#include <stdio.h>
+
 void stopInterrupt(){
     if (elevio_stopButton()){
         elevio_motorDirection(DIRN_STOP);

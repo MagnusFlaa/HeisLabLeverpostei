@@ -1,7 +1,8 @@
 #pragma once
 
 #include <stdbool.h>
-#include <source/driver/elevio.h>
+
+#include "driver/elevio.h"
 
 
 void stopInterrupt();

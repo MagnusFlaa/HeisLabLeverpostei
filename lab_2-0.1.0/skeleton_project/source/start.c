@@ -40,10 +40,11 @@ void start(){
     int floor = elevio_floorSensor();
 
     while(1){
+        floor = elevio_floorSensor();
+        set_floor_indicator(floor);
 
         //Håndterer neste i køen
         if(mainQueue.size > 0){
-            floor = elevio_floorSensor();
             if(floor == nextFloor){
                 elevio_motorDirection(DIRN_STOP);
                 nanosleep(&(struct timespec){2, 0}, NULL);  // Vent 2 sekunder
@@ -95,8 +96,6 @@ void start(){
             elevio_motorDirection(DIRN_STOP);
             break;
         }
-        
-        elevio_floorIndicator(floor);
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }

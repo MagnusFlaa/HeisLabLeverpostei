@@ -38,6 +38,9 @@ void start(){
 
     int nextFloor = get_first_Queue(&mainQueue);
     int floor = elevio_floorSensor();
+    int openTime = -1;
+    int startTime = -1;
+    
 
     while(1){
         floor = elevio_floorSensor();
@@ -46,19 +49,29 @@ void start(){
         //Håndterer neste i køen
         if(mainQueue.size > 0){
             if(floor == nextFloor){
-                elevio_motorDirection(DIRN_STOP);
-                nanosleep(&(struct timespec){2, 0}, NULL);  // Vent 2 sekunder
-                pop_front_Queue(&mainQueue);
-                if(mainQueue.size > 0){
-                    nextFloor = get_first_Queue(&mainQueue);
-                    if(floor < nextFloor){
-                        elevio_motorDirection(DIRN_UP);
-                    }
-                    else if(floor > nextFloor){
-                        elevio_motorDirection(DIRN_DOWN);
-                    }
+                if(startTime == -1){
+                    startTime = time(NULL);
+                    elevio_motorDirection(DIRN_STOP);
+                    elevio_doorOpenLamp(1);
                 }
-                
+                else if(openTime >= DOOR_OPEN_TIME){
+                    elevio_doorOpenLamp(0);
+                    pop_front_Queue(&mainQueue);
+                    if(mainQueue.size > 0){
+                        nextFloor = get_first_Queue(&mainQueue);
+                        if(floor < nextFloor){
+                            elevio_motorDirection(DIRN_UP);
+                        }
+                        else if(floor > nextFloor){
+                            elevio_motorDirection(DIRN_DOWN);
+                        }
+                    }
+                    openTime = -1;
+                    startTime = -1;
+                }
+                else{
+                    openTime = time(NULL) - startTime;
+                }
             }
         }
 
@@ -69,6 +82,7 @@ void start(){
                 for(int b = 0; b < N_BUTTONS; b++){
                     int btnPressed = elevio_callButton(f, b);
                     if (btnPressed){
+                        elevio_buttonLamp(f,b,1);
                         //sjekker om den kan legge til etasjen
                         if(appendQueue(f,&mainQueue)){
                             //setter motorretning hvis den var tom før denne ble appended

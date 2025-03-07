@@ -1,4 +1,5 @@
 #include "queue.h"
+#include "driver/elevio.h"
 
 void initQueue(Queue *q){
     q->size = 0;
@@ -15,6 +16,10 @@ bool appendQueue(int floor, Queue *q){
 }
 
 void pop_front_Queue(Queue *q){
+    int floor = q->bestillinger[0];
+    elevio_buttonLamp(floor,0,0);
+    elevio_buttonLamp(floor,1,0);
+    elevio_buttonLamp(floor,2,0);
     for(int i = 0; i < q->size-1; i++){
         q->bestillinger[i] = q->bestillinger[i+1];
     }

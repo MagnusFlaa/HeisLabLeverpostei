@@ -2,6 +2,7 @@
 #include "driver/elevio.h"
 #include "queue.h"
 #include "lamp.h"
+#include "interrupt.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -100,16 +101,10 @@ void start(){
                 }
             }
         }
-        if(elevio_obstruction()){
-            elevio_stopLamp(1);
-        } else {
-            elevio_stopLamp(0);
-        }
         
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
+        stopInterrupt(&mainQueue);
+        
+        obstructionInterrupt();
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }

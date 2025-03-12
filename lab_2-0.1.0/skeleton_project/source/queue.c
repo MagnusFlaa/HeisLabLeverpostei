@@ -45,7 +45,6 @@ bool is_in_Queue(int floor, Queue *q){
 
 void clear_queue(Queue *q){
     for(int i = 0 ; i < q->size; i++){
-        q->bestillinger[i] = 0 ;
+        pop_front_Queue(q);
     }
-    q->size = 0;
 }

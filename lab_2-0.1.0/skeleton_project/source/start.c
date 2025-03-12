@@ -31,6 +31,7 @@ void start(){
     elevio_stopLamp(1);  // Tenn stopp-lampa
     nanosleep(&(struct timespec){1, 0}, NULL);  // Vent 1 sekund
     elevio_stopLamp(0); //Slukk lampa
+    elevio_doorOpenLamp(0);
 
     //Starting the main program:
 
@@ -41,10 +42,16 @@ void start(){
     int floor = elevio_floorSensor();
     int openTime = -1;
     int startTime = -1;
+    int doorOpen = 0;
+    int prevFloor = 0;
+    int prevDirn = 0;
     
 
     while(1){
         floor = elevio_floorSensor();
+        if (floor != -1){
+            prevFloor = floor;
+        }
         set_floor_indicator(floor);
 
         //Håndterer neste i køen
@@ -54,17 +61,21 @@ void start(){
                     startTime = time(NULL);
                     elevio_motorDirection(DIRN_STOP);
                     elevio_doorOpenLamp(1);
+                    doorOpen = 1;
                 }
                 else if(openTime >= DOOR_OPEN_TIME){
                     elevio_doorOpenLamp(0);
+                    doorOpen = 0;
                     pop_front_Queue(&mainQueue);
                     if(mainQueue.size > 0){
                         nextFloor = get_first_Queue(&mainQueue);
                         if(floor < nextFloor){
                             elevio_motorDirection(DIRN_UP);
+                            prevDirn = 1;
                         }
                         else if(floor > nextFloor){
                             elevio_motorDirection(DIRN_DOWN);
+                            prevDirn = -1;
                         }
                     }
                     openTime = -1;
@@ -89,12 +100,31 @@ void start(){
                             //setter motorretning hvis den var tom før denne ble appended
                             if(mainQueue.size == 1){
                                 nextFloor = get_first_Queue(&mainQueue);
-                                if(floor < nextFloor){
-                                    elevio_motorDirection(DIRN_UP);
+                                if(floor != -1){
+                                    if(floor < nextFloor){
+                                        elevio_motorDirection(DIRN_UP);
+                                    }
+                                    else if(floor > nextFloor){
+                                        elevio_motorDirection(DIRN_DOWN);
+                                    }
                                 }
-                                else if(floor > nextFloor){
-                                    elevio_motorDirection(DIRN_DOWN);
+                                else{
+                                    if(prevFloor < nextFloor){
+                                        elevio_motorDirection(DIRN_UP);
+                                    }
+                                    else if(prevFloor > nextFloor){
+                                        elevio_motorDirection(DIRN_DOWN);
+                                    }
+                                    else{
+                                        if(prevDirn == -1){
+                                            elevio_motorDirection(DIRN_UP);
+                                        }
+                                        else{
+                                            elevio_motorDirection(DIRN_DOWN);
+                                        }
+                                    }
                                 }
+                                
                             }
                         }
                     }
@@ -102,9 +132,9 @@ void start(){
             }
         }
         
-        stopInterrupt(&mainQueue);
+        stopInterrupt(floor, &mainQueue);
         
-        obstructionInterrupt();
+        obstructionInterrupt(doorOpen);
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }

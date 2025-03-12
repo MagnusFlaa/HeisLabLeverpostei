@@ -1,7 +1,7 @@
 #include "lamp.h"
 #include "driver/elevio.h"
 
-int door_state = 0;
+
 
 void set_floor_indicator(int floor){
     if(floor >= 0){
@@ -12,7 +12,6 @@ void set_floor_indicator(int floor){
 
 void open_door(){
     elevio_doorOpenLamp(1);
-    door_state = 1;
 }
 
 void close_door(){

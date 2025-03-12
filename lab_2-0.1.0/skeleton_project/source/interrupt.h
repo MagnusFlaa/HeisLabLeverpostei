@@ -6,6 +6,6 @@
 #include "lamp.h"
 
 
-void stopInterrupt(Queue *q);
+void stopInterrupt(int floor, Queue *q);
 
-void obstructionInterrupt();
+void obstructionInterrupt(int doorOpen);

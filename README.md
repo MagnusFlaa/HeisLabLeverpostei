@@ -1,4 +1,4 @@
-glem aldri å logge utnav github-brukeren din!
+glem aldri å logge ut av github-brukeren din!
 
 
 ```

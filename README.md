@@ -1,3 +1,6 @@
+glem aldri å logge utnav github-brukeren din!
+
+
 ```
 git config --add --local core.sshCommand 'ssh -i <PATH_SSH_KEY>'
 ```
